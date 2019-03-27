@@ -6,7 +6,7 @@ register = template.Library()
 
 @register.filter
 def format_date(value):
-    t_v = int(value.split(',')[0])
+    t_v = int(value)
     post_time = time.gmtime(t_v)
     y = time.strftime('%Y-%m-%d %H:%M:%S', post_time)
     format_time = '%Y-%m-%d %H:%M:%S'
@@ -19,7 +19,7 @@ def format_date(value):
     if (delta_seconds < 60 * 10):
         return 'только что'
     elif (delta_days < 1):
-        return str(delta_seconds // (24 * 60 * 60)) + 'часов назад'
+        return str(delta_seconds // (24 * 60 * 60)) + ' часов назад'
     else:
         return  time.strftime('%Y-%m-%d', post_time)
 
