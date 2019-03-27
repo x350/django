@@ -31,7 +31,15 @@ def format_date(value):
 @register.filter
 def format_num_comments(value):
     # Ваш код
-    return value
+    rating = int(value)
+    if (rating == 0):
+        return 'Оставте комментарий'
+    elif ((rating >= -5) and (rating <= 5 )):
+        return 'нейтрально'
+    elif (rating > 5):
+        return 'хорошо'
+    else:
+        return value
 
 
 
