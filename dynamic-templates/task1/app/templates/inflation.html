@@ -1,0 +1,50 @@
+<!DOCTYPE html>{% load static %}
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Инфляция в России</title>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  </head>
+
+  <body>
+    {% block content %}
+      <div class="row">
+        <h1 class="col s12">Инфляция в России</h1>
+        <ul class="col s12 m8">
+        
+        <!-- Ваша логика -->
+            <table>
+                <tr>
+                    {% for oneItem in title %}
+                        <td>{{ oneItem }}</td>
+                    {% endfor %}
+                </tr>
+                <tr>
+                    {% for twoItem in data %}
+                        <tr>
+                            {%  for item in twoItem %}
+                                <td style="background:
+                                    {% if item < 0 %} green{% endif %}
+                                    {% if item >= 1 and item < 2 %} #FF7373{% endif %}
+                                    {% if item >= 2 and item < 5 %} #FF4040{% endif %}
+                                    {% if item >= 5 %} #A60000{% endif %}
+                                    {%  if item == twoItem|last %} grey{% endif %}
+                                ">{{ item|default:"-" }}</td>
+                            {%  endfor %}
+                        </tr>
+                    {% endfor %}
+                </tr>
+            </table>
+
+        </ul>
+      </div>
+    {% endblock %}
+
+  </body>
+</html>
