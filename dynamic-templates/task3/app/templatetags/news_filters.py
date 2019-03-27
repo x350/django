@@ -25,18 +25,31 @@ def format_date(value):
 
 
 # необходимо добавить фильтр для поля `score`
+# @register.filter
+# def format_num_comments(value):
+#     # Ваш код
+#     rating = int(value)
+#     if (rating == 0):
+#         return 'Оставте комментарий'
+#     elif ((rating >= -5) and (rating <= 5 )):
+#         return 'нейтрально'
+#     elif (rating > 5):
+#         return 'хорошо'
+#     else:
+#         return value
+
 
 
 @register.filter
 def format_num_comments(value):
     # Ваш код
-    rating = int(value)
-    if (rating == 0):
+    num_comm = int(value)
+    if (num_comm == 0):
         return 'Оставте комментарий'
-    elif ((rating >= -5) and (rating <= 5 )):
-        return 'нейтрально'
-    elif (rating > 5):
-        return 'хорошо'
+    elif ((num_comm > 0) and (num_comm <= 50 )):
+        return str(num_comm)
+    elif (num_comm > 50):
+        return '50+'
     else:
         return value
 
