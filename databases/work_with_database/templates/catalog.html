@@ -10,10 +10,36 @@
 
         <div class="sort-block">
             {# Здесь должен быть раздел с сортировкой #}
+
+
         </div>
 
         <div class="content">
             {# Здесь должен отображаться каталог с телефонами #}
+            <div>
+                {% for item in phone %}
+                    <table>
+                        <tr>
+                            <td>{{ item.name }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ item.price }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ item.image }}</td>
+                        </tr>
+                    </table>
+                {% endfor %}
+            </div>
+
+                    <tr>Бренд</tr>
+                    {% for item in phone %}
+                      <td style="font-weight: bold">{{ item.brend|center:"15" }}</td>
+                    {% endfor %}
+                </tr>
+            </div>
+
+
         </div>
     </div>
 {% endblock %}

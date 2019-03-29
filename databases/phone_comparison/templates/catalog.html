@@ -1,11 +1,88 @@
 {% extends "base.html" %}
 {% load static %}
 
+
 {% block title %}Каталог{% endblock %}
 {% block content %}
     <div class="container">
         <div class="header">
             <h1>Сравнение телефонов</h1>
+        </div>
+
+        <div>
+            <table>
+                <tr>
+                    <td>Бренд</td>
+                    {% for item in phone %}
+                      <td style="font-weight: bold">{{ item.brend|center:"15" }}</td>
+                    {% endfor %}
+                </tr>
+
+                <tr>
+                    <td>Модель            </td>
+                    {% for item in phone %}
+                      <td >{{ item.model_phone|center:"15"  }}</td>
+                    {% endfor %}
+                </tr>
+
+                <tr>
+                    <td>Операционная система</td>
+                    {% for item in phone %}
+                      <td>{{ item.os_phone|center:"15"  }}</td>
+                    {% endfor %}
+                </tr>
+
+                <tr>
+                    <td>Размер дисплея</td>
+                    {% for item in phone %}
+                      <td>{{ item.display_size|center:"15"  }} дюймов</td>
+                    {% endfor %}
+                </tr>
+
+                <tr>
+                    <td>Оперативная память</td>
+                    {% for item in phone %}
+                      <td>{{ item.storage_memory|center:"15"  }}</td>
+                    {% endfor %}
+                </tr>
+
+                <tr>
+                    <td>Наличие FM тюнера</td>
+                    {% for item in phone %}
+                      <td>{{ item.fm_tuner|yesno:"Да,Нет" }} </td>
+                    {% endfor %}
+                </tr>
+
+                <tr>
+                    <td>Наличие NFC</td>
+                    {% for item in phone %}
+                      <td>{{ item.nfc|yesno:"Да,Нет" }} </td>
+                    {% endfor %}
+                </tr>
+
+                <tr>
+                    <td>Частота процессора</td>
+                    {% for item in phone %}
+                      <td>{{ item.cpu_frequency|center:"15"  }}</td>
+                    {% endfor %}
+                </tr>
+
+                <tr>
+                    <td>Цвет</td>
+                    {% for item in phone %}
+                      <td>{{ item.color|center:"15"  }}</td>
+                    {% endfor %}
+                </tr>
+
+                <tr>
+                    <td>Камера</td>
+                    {% for item in phone %}
+                      <td>{{ item.camera_mp|center:"15"  }} Mn</td>
+                    {% endfor %}
+                </tr>
+
+            </table>
+
         </div>
     </div>
 {% endblock %}
