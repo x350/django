@@ -22,17 +22,17 @@
             {# Здесь должен отображаться каталог с телефонами #}
             <div>
                 {% for item in phone %}
-                    <table>
-                        <tr>
-                            <td>{{ item.name }}</td>
-                        </tr>
-                        <tr>
-                            <td>{{ item.price }}</td>
-                        </tr>
-                        <tr>
-                            <td><img src='{% static item.image %}' alt="{{ item.name }}"></td>
-                        </tr>
-                    </table>
+                    <div class="phone-block">
+                        <div>
+                            <a class="name" href="">{{ item.name }}</a>
+                        </div>
+
+                        <div>{{ item.price }}</div>
+
+                        <div>
+                            <img class="img" src='{% static item.image %}' alt="{{ item.name }}">
+                        </div>
+                    </div>
                 {% endfor %}
             </div>
 

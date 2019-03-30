@@ -14,13 +14,12 @@
 
 }
 
-.sort-block {
-    display: block;
-}
+/*.sort-block {*/
+    /*display: block;*/
+/*}*/
 
 .sort-item {
     width: 100px;
-    display: inline;
 }
 
 .price {
