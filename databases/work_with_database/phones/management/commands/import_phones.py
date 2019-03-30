@@ -1,14 +1,13 @@
 import csv
-
 from django.core.management.base import BaseCommand
 from phones.models import Phone
 
 from django.template.defaultfilters import slugify
 import requests
-import tempfile
-from django.core import files
-from PIL import Image
-from io import BytesIO
+# import tempfile
+# from django.core import files
+# from PIL import Image
+# from io import BytesIO
 
 
 class Command(BaseCommand):
@@ -28,7 +27,7 @@ class Command(BaseCommand):
                                      price=line[3], release_date=line[4], lte_exists=line[5],
                                      slug=slugify(line[1]))
 
-import urllib.request
+# import urllib.request
 # def get_image(url):
 #     return urllib.request.urlretrieve(url)[0]
 
@@ -40,13 +39,6 @@ def get_image(url, name):
     out.close()
     return name + ".jpg"
 
-# def get_image(url, name):
-#     request = requests.get(url, stream=True)
-#     lf = tempfile.NamedTemporaryFile()
-#     lf.write(request.content)
-#     image = Image
-#     return image.ima.save(name, files.File(lf))
-#
 
 
 
