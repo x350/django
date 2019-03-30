@@ -10,8 +10,7 @@ class BookListView(generic.ListView):
 
 
     def get_context_data(self, **kwargs):
-        context = {}
-        file_path = os.path.join(settings.BASE_DIR, 'fixtures/books.json')
-        with open(file_path, encoding='cp1251') as js_file:
-            books = json.load(js_file)
-            print(books)
+        context = super(BookListView, self).get_context_data(**kwargs)
+
+        return context
+
