@@ -4,7 +4,6 @@ from .models import Phone
 def show_catalog(request):
     sort = request.GET.get("sort", "")
 
-    # по названию
     if (sort == 'min_price'):
         phone = Phone.objects.order_by('price')
     elif (sort == 'price'):
@@ -23,7 +22,11 @@ def show_catalog(request):
 
 
 def show_product(request, slug):
+    phone = Phone.objects.get(slug=slug )
+    print(phone.name)
+    context = {'phone': phone}
     return render(
         request,
         'product.html',
+        context
     )

@@ -8,7 +8,11 @@
             <h1>Телефон</h1>
         </div>
         <div class="content">
-
+            <div>Название :{{ phone.name }}</div>
+            <img class="img" src='{% static phone.image %}' alt="{{ phone.name }}">
+            <div>Цена : {{ phone.price }} руб.</div>
+            <div>Дата выхода : {{ phone.release_date }}</div>
+            <div>Наличие LTE : {{ phone.lte_exists | yesno:"Да,Нет"  }}</div>
         </div>
     </div>
 {% endblock %}

@@ -24,10 +24,10 @@
                 {% for item in phone %}
                     <div class="phone-block">
                         <div>
-                            <a class="name" href="">{{ item.name }}</a>
+                            <a class="name" href="{{ item.slug }}">{{ item.name }}</a>
                         </div>
 
-                        <div>{{ item.price }}</div>
+                        <div>Стоимость:  {{ item.price }}</div>
 
                         <div>
                             <img class="img" src='{% static item.image %}' alt="{{ item.name }}">
