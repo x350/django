@@ -1,6 +1,7 @@
 .header {
     margin-top: 30px;
     margin-bottom: 50px;
+    color: red;
 }
 
 .phone {
@@ -10,9 +11,21 @@
 
 .sort-block .sort-item {
     padding-right: 20px;
+
+}
+
+.sort-block {
+    display: block;
+}
+
+.sort-item {
+    width: 100px;
+    display: inline;
 }
 
 .price {
     font-weight: bold;
 }
+
+
 
