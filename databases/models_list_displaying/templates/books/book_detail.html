@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+  <h1>    Название книги : {{ book.name }}</h1>
+
+  <p><strong>Автор :</strong> <a href="">{{ book.author }}</a></p> <!-- author detail link not yet defined -->
+  <p><strong>Дата публикации:</strong> {{ book.pub_date }}</p>
+
+{% endblock %}
