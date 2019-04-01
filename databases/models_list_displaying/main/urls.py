@@ -23,5 +23,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('books/', books.views.BookListView.as_view(), name='book_view'),
     url(r'^book/(?P<pk>\d+$)', books.views.BookDetailView.as_view(), name='book-detail'),
-    url(r'^book/(?P<stub>[-\d]+)$', books.views.BookListView.as_view(), name='book-detail'),
+    url(r'^books/(?P<stub>\d{4}-\d{2}-\d{2}$)', books.views.BookDateView.as_view(), name='book-date'),
 ]

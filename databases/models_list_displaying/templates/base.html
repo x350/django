@@ -7,6 +7,12 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link type="text/css" rel="stylesheet" href="{% static "css/bootstrap.css" %}"  media="screen,projection"/>
     <link type="text/css" rel="stylesheet" href="{% static "css/style.css" %}"  media="screen,projection"/>
+    <style>
+        .pagination {
+{#            display: block;#}
+            margin-left: 25%;
+        }
+    </style>
 
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -14,7 +20,7 @@
 
   <body>
     {% block content %}{% endblock %}
-
+    {% block pagination %}{% endblock %}
     <!--JavaScript at end of body for optimized loading-->
     <script type="text/javascript" src="{% static "js/bootstrap.js" %}"></script>
   </body>
