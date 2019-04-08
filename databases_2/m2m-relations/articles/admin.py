@@ -1,8 +1,48 @@
 from django.contrib import admin
+from django.core.exceptions import ValidationError
+from django.forms import BaseInlineFormSet
+from .models import Article, Tags
 
-from .models import Article
+
+class RelationshipInlineFormset(BaseInlineFormSet):
+    def clean(self):
+        for form in self.forms:
+            # В form.cleaned_data будет словарь с данными
+            # каждой отдельной формы, которые вы можете проверить
+            form.cleaned_data
+            # вызовом исключения ValidationError можно указать админке о наличие ошибки
+            # таким образом объект не будет сохранен,
+            # а пользователю выведется соответствующее сообщение об ошибке
+            raise ValidationError('Тут всегда ошибка')
+        return super().clean()  # вызываем базовый код переопределяемого метода
+
+
+
+
+class TagsInLine(admin.TabularInline):
+    model = Tags.articles.through
+    formset = RelationshipInlineFormset
+    extra = 1
+    # list_display = ('name', )
 
 
 @admin.register(Article)
 class ArticleAdmin(admin.ModelAdmin):
-    pass
+    list_display = (
+        'title', 'text', 'published_at', 'image',
+    )
+    inlines = [
+        TagsInLine,
+    ]
+    # exclude = ('name',)
+
+
+@admin.register(Tags)
+class ArticleAdmin(admin.ModelAdmin):
+    list_display = (
+        'name',
+    )
+    exclude = ('articles',)
+    # inlines = [
+    #     TagsInLine,
+    # ]

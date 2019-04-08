@@ -14,12 +14,17 @@ class BookDetailView(generic.DetailView):
     model = Book
 
 class BookDateView(generic.ListView):
-    template_name = 'books/book_date.html'
+    # template_name = 'books/book_date.html'
     model = Book
     paginate_by = 1
 
-    def get_queryset(self):
+    # def get_queryset(self):
+    #     print(self.kwargs)
+    #
+    #     return Book.objects.order_by('pub_date')
+    # #
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
         print(self.kwargs)
-        # qs = super().get_queryset()
-
-        return Book.objects.order_by('pub_date')
+        context['book_list'] = Book.objects.filter(pub_date=self.kwargs['date'])
+        return context
