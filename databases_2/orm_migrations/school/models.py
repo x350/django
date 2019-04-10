@@ -18,8 +18,6 @@ class Student(models.Model):
     teacher = models.ManyToManyField(Teacher, related_name='students')
     group = models.CharField(max_length=10, verbose_name='Класс')
 
-    # objects = UserManager()
-
     class Meta:
         verbose_name = 'Ученик'
         verbose_name_plural = 'Ученики'
