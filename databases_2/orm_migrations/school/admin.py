@@ -5,6 +5,7 @@ from .models import Student, Teacher
 
 class StudentInLine(admin.TabularInline):
     model = Student.teacher.through
+    extra = 1
 
 
 @admin.register(Student)

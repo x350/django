@@ -7,12 +7,10 @@
   <ul>
   {% for student in student_list %}
     <li>{{ student.name }} {{ student.group }} <br> Преподаватель:
-{#        {% for obj_teacher in teacher_list %}#}
-{#            <p>{{ obj_teacher.name }}</p>#}
-{#            <p>{{ obj_teacher.subject }}</p>#}
-{#        {% endfor %}#}
-
-        {{ student.teacher.name }} {{ student.teacher.subject }}
+      <ul>
+            <li>{{ student.teacher__name }}</li>
+            <p>{{ student.teacher__subject }}</p>
+      </ul>
     </li>
   {% endfor %}
   </ul>

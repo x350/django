@@ -8,8 +8,11 @@ class StudentListView(ListView):
     ordering = 'group'
 
     def get_queryset(self):
-        queryset = self.model.objects.all()
-        print(queryset.values())
+        # set = self.model.objects.all()
+        # queryset = {student.group: {student.teacher.all()} for student in self.model.objects.all()}
+        queryset = self.model.objects.all().prefetch_related('teacher').values('name', 'teacher__name', 'teacher__subject')
+
+        print(queryset)
         return queryset
 
 
