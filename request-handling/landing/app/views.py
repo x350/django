@@ -12,15 +12,23 @@ counter_click = Counter()
 
 def index(request):
     # Реализуйте логику подсчета количества переходов с лендига по GET параметру from-landing
+    from_landing = request.GET.get('from-landing')
+    print(from_landing)
+    counter_click[from_landing] += 1
     return render_to_response('index.html')
 
 
-def landing(request):
+def landing(request):    
     # Реализуйте дополнительное отображение по шаблону app/landing_alternate.html
     # в зависимости от GET параметра ab-test-arg
     # который может принимать значения original и test
     # Так же реализуйте логику подсчета количества показов
-    return render_to_response('landing.html')
+    ab_test_arg = request.GET.get('ab-test-arg')
+    counter_show[ab_test_arg] += 1
+    if ab_test_arg == 'test':
+        return render_to_response('landing_alternate.html')
+    if ab_test_arg == 'original':
+        return render_to_response('landing.html')
 
 
 def stats(request):
@@ -28,7 +36,17 @@ def stats(request):
     # Чтобы отличить с какой версии лендинга был переход
     # проверяйте GET параметр marker который может принимать значения test и original
     # Для вывода результат передайте в следующем формате:
+    try:
+        text_conv = round(counter_click['test'] / counter_show['test'], 1)
+    except ZeroDivisionError:
+        text_conv = 'no views'
+
+    try:
+        orig_conv = round(counter_click['original'] / counter_show['original'], 1)
+    except ZeroDivisionError:
+        orig_conv = 'no views'
+
     return render_to_response('stats.html', context={
-        'test_conversion': 0.5,
-        'original_conversion': 0.4,
+        'test_conversion': text_conv,
+        'original_conversion': orig_conv,
     })

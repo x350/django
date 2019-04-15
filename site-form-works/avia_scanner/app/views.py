@@ -6,6 +6,8 @@ from django.views.generic.edit import FormMixin
 from django.http import JsonResponse
 from django.core.cache import cache
 
+CACHE_TIMEOUT = 60
+
 from .models import City
 from .forms import SearchTicket
 
@@ -17,5 +19,16 @@ class TicketPageView(FormMixin, TemplateView):
 
 def cities_lookup(request):
     """Ajax request предлагающий города для автоподстановки, возвращает JSON"""
-    results = []
+    term = request.GET.get('term')
+    cache_key = f'cities-{term}'
+    cached = cache.get(cache_key)
+    if cached is not None:
+        return JsonResponse(cached, safe=False)
+
+    if not term:
+        results = []
+    else:
+        query = City.objects.filter(name__icontains=term)
+        results = [c.name for c in query]
+        cache.set(cache_key, results, CACHE_TIMEOUT)
     return JsonResponse(results, safe=False)
