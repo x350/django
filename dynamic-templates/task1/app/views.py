@@ -16,8 +16,7 @@ class InflationView(TemplateView):
             context['head'] = next(csvfile).split(';')
             context['data'] = []
             for row in reader:
-                item = row.popitem()
-                temp = item[1].split(';')
-                context['data'].append(temp)
+                item = row.popitem()[1].split(';')
+                context['data'].append(item)
         return render(request, self.template_name, context)
 

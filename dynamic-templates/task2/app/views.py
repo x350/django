@@ -37,5 +37,3 @@ class ExamplesView(TemplateView):
         return render(request, self.template_name,
                       context)
 
-# from django.conf import settings
-# print(settings.TEMPLATE_DIR)
