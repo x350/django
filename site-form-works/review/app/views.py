@@ -16,37 +16,46 @@ class ProductsList(ListView):
         return queryset
 
 
-def viewDetail(request, **kwargs):
-    template = 'app/product_detail.html'
+# def viewDetail(request, **kwargs):
+#     template = 'app/product_detail.html'
+#     model_product = Product
+#     model_review = Review
+#     context = {}
+#     context['form'] = ReviewForm()
+#     product = model_product.objects.get(pk=kwargs['pk'])
+#     context['object'] = product
+#     # context['reviews'] = model_review.objects.select_related(model_product)
+#     # print(context['reviews'])
+#     print(context)
+#
+#     return render(request, template, context)
+
+
+
+
+class ProductView(DetailView):
     model_product = Product
     model_review = Review
-    context = {}
-    context['form'] = ReviewForm()
-    product = model_product.objects.get(pk=kwargs['pk'])
-    context['object'] = product
-    # context['reviews'] = model_review.objects.select_related(model_product)
-    # print(context['reviews'])
-    print(context)
+    template_name = 'app/product_detail.html'
 
-    return render(request, template, context)
+    # def get_queryset(self, **kwargs):
+    #     context = {}
+    #     context['form'] = ReviewForm()
+    #     print(self.kwargs['pk'])
+    #     product = self.model_product.objects.get(pk=self.kwargs['pk'])
+    #     context['object'] = product
+    #     # context['reviews'] = self.model_review.objects.select_related(self.model_product)
+    #     print(context)
+    #     return context
 
-
-
-
-# class ProductView(DetailView):
-#     model_product = Product
-#     model = Review
-#     template_name = 'product_detail.html'
-#     form_class = ReviewForm
 #
-#     def get_context_data(self, request, **kwargs):
-#         context = super(ProductView, self).get_context_data(**kwargs)
-#         context['form'] = ReviewForm()
-#         product =  self.model_product.objects.get(kwargs['pk'])
-#         if product:
-#             context['object'] = product
-#         context['reviews'] = self.model.objects.all()
-#         return context
+    def get_context_data(self, request, **kwargs):
+        context = super(ProductView, self).get_context_data(**kwargs)
+        context['form'] = ReviewForm()
+        product =  self.model_product.objects.get(pk=kwargs['pk'])
+        context['object'] = product
+        # context['reviews'] = self.model_review.objects.select_related(self.model_product)
+        return context
 #
 #
 #     def get(self, request, **kwargs):
@@ -54,13 +63,7 @@ def viewDetail(request, **kwargs):
 #         print('--------------------------------', context)
 #         return  render(request=request, template_name=self.template_name, context=context )
 #
-#     def get_queryset(self, **kwargs):
-#         queryset = {}
-#         queryset['object'] = self.model_product.objects.get(pk=kwargs['pk'])
-#         queryset['reviews'] = self.model.objects.select_related(Product, kwargs['pk'])
-#         queryset['form'] = ReviewForm()
-#         print(queryset)
-#         return queryset
+
 #
 #
 #     # def post(self, request, *args, **kwargs):

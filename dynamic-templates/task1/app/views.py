@@ -12,13 +12,10 @@ class InflationView(TemplateView):
         file_path = os.path.join(settings.BASE_DIR, 'inflation_russia.csv')
         with open(file_path, newline='', encoding='utf-8') as csvfile:
             reader = csv.DictReader(csvfile)
+            context['head'] = next(csvfile).split(';')
             context['data'] = []
             for row in reader:
                 item = row.popitem()
-                title = item[0].split(';')
-                title[-1] = 'Всего'
-                context['title'] = title
-
                 temp = item[1].split(';')
                 prepList = temp[:1]
                 for i in temp[1:-1]:

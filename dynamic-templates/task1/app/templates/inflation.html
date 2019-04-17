@@ -1,3 +1,4 @@
+{%  load background %}
 <!DOCTYPE html>{% load static %}
 <html>
   <head>
@@ -21,7 +22,7 @@
         <!-- Ваша логика -->
             <table>
                 <tr>
-                    {% for oneItem in title %}
+                    {% for oneItem in head %}
                         <td>{{ oneItem }}</td>
                     {% endfor %}
                 </tr>
@@ -30,12 +31,13 @@
                         <tr>
                             {%  for item in twoItem %}
                                 <td style="background:
-                                    {% if item < 0 %} green{% endif %}
-                                    {% if item >= 1 and item < 2 %} #FF7373{% endif %}
-                                    {% if item >= 2 and item < 5 %} #FF4040{% endif %}
-                                    {% if item >= 5 %} #A60000{% endif %}
-                                    {%  if item == twoItem|last %} grey{% endif %}
-                                ">{{ item|default:"-" }}</td>
+                                  {%  if item == twoItem|last %} grey
+                                  {% elif  item == twoItem|first %} white
+                                  {% else %}
+                                      {{ item | background }}
+                                  {% endif %}">
+
+                                {{ item|default:"-" }}</td>
                             {%  endfor %}
                         </tr>
                     {% endfor %}
