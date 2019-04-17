@@ -16,27 +16,27 @@ class ProductsList(ListView):
         return queryset
 
 
-# def viewDetail(request, **kwargs):
-#     template = 'app/product_detail.html'
-#     model_product = Product
-#     model_review = Review
-#     context = {}
-#     context['form'] = ReviewForm()
-#     product = model_product.objects.get(pk=kwargs['pk'])
-#     context['object'] = product
-#     # context['reviews'] = model_review.objects.select_related(model_product)
-#     # print(context['reviews'])
-#     print(context)
-#
-#     return render(request, template, context)
-
-
-
-
-class ProductView(DetailView):
+def viewDetail(request, **kwargs):
+    template = 'app/product_detail.html'
     model_product = Product
     model_review = Review
-    template_name = 'app/product_detail.html'
+    context = {}
+    context['form'] = ReviewForm()
+    product = model_product.objects.get(pk=kwargs['pk'])
+    context['object'] = product
+    # context['reviews'] = model_review.objects.select_related(model_product)
+    # print(context['reviews'])
+    print(request.method)
+
+    return render(request, template, context)
+
+
+
+
+# class ProductView(DetailView):
+#     model_product = Product
+#     model_review = Review
+#     template_name = 'app/product_detail.html'
 
     # def get_queryset(self, **kwargs):
     #     context = {}
@@ -49,13 +49,13 @@ class ProductView(DetailView):
     #     return context
 
 #
-    def get_context_data(self, request, **kwargs):
-        context = super(ProductView, self).get_context_data(**kwargs)
-        context['form'] = ReviewForm()
-        product =  self.model_product.objects.get(pk=kwargs['pk'])
-        context['object'] = product
-        # context['reviews'] = self.model_review.objects.select_related(self.model_product)
-        return context
+    # def get_context_data(self, request, **kwargs):
+    #     context = super(ProductView, self).get_context_data(**kwargs)
+    #     context['form'] = ReviewForm()
+    #     product =  self.model_product.objects.get(pk=kwargs['pk'])
+    #     context['object'] = product
+    #     # context['reviews'] = self.model_review.objects.select_related(self.model_product)
+    #     return context
 #
 #
 #     def get(self, request, **kwargs):
