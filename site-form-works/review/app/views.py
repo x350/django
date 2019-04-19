@@ -16,7 +16,7 @@ class ProductsList(ListView):
         return queryset
 
 
-def viewDetail(request, **kwargs):
+def view_detail(request, **kwargs):
     template = 'app/product_detail.html'
     model_product = Product
     model_review = Review
@@ -55,7 +55,7 @@ def viewDetail(request, **kwargs):
             request.session['visit'] = value_visit
             return render(request, template, context)
 
-# ситаксическмй сахар - не сазар, большую часть времени приходится заниматся Class-Based Views а не темой лекции
+# ситаксическмй сахар - не сахар, большую часть времени приходится разбираться Class-Based Views а не темой лекции
 #  не хватает лекции по Class-Based Views.
 
 # черновики оставил на разобраться потом
