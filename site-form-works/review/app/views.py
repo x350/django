@@ -20,30 +20,35 @@ def viewDetail(request, **kwargs):
     template = 'app/product_detail.html'
     model_product = Product
     model_review = Review
+    id_product = pk=kwargs['pk']
+    context = {}
+    product = model_product.objects.get(pk=id_product)
+    context['object'] = product
+    context['form'] = ReviewForm()
+    value_visit = []
 
     if request.method == 'POST':
-        print(request.session)
-        context = {}
-        context['form'] = ReviewForm()
-        product = model_product.objects.get(pk=kwargs['pk'])
-        print('--------', product.id)
-        context['object'] = product
-
-        # context['reviews'] = model_review.objects.select_related(model_product)
-        # print(context['reviews'])
-        print(context)
-        return render(request, template, context)
+        from_form = ReviewForm(request.POST)
+        if from_form.is_valid():
+            model_review.objects.create(text=from_form.data['text'], product=model_product.objects.get(pk=id_product))
+            context['reviews'] = model_review.objects.filter(product=id_product)
+            print(context['reviews'])
+            return render(request, template, context)
     else:
-        context = {}
-        context['form'] = ReviewForm()
-        product = model_product.objects.get(pk=kwargs['pk'])
-        print('--------', product.id)
-        context['object'] = product
+        # if 'visit' in request.session:
+        #     value_visit = request.session['visit']
+        #     if id_product in value_visit:
+        #         context['reviews'] = model_review.objects.filter(product=id_product)
+        #         print(context['reviews'])
+        #
+        #         return render(request, template, context)
+        #     else:
+                context['reviews'] = model_review.objects.filter(product=id_product)
+                context['form'] = ReviewForm()
+                value_visit.append(id_product)
+                request.session['visit'] = value_visit
+                return render(request, template, context)
 
-    # context['reviews'] = model_review.objects.select_related(model_product)
-    # print(context['reviews'])
-        print(context)
-        return render(request, template, context)
 
 
 
