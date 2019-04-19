@@ -20,7 +20,7 @@ def viewDetail(request, **kwargs):
     template = 'app/product_detail.html'
     model_product = Product
     model_review = Review
-    id_product = pk=kwargs['pk']
+    id_product = kwargs['pk']
     context = {}
     product = model_product.objects.get(pk=id_product)
     context['object'] = product
@@ -32,28 +32,34 @@ def viewDetail(request, **kwargs):
         if from_form.is_valid():
             model_review.objects.create(text=from_form.data['text'], product=model_product.objects.get(pk=id_product))
             context['reviews'] = model_review.objects.filter(product=id_product)
-            print(context['reviews'])
+            context['form'] = ''
             return render(request, template, context)
     else:
-        # if 'visit' in request.session:
-        #     value_visit = request.session['visit']
-        #     if id_product in value_visit:
-        #         context['reviews'] = model_review.objects.filter(product=id_product)
-        #         print(context['reviews'])
-        #
-        #         return render(request, template, context)
-        #     else:
+        if 'visit' in request.session:
+            value_visit = request.session.get('visit', 0)
+            if id_product in value_visit:
+                context['reviews'] = model_review.objects.filter(product=id_product)
+                print(value_visit)
+                context['form'] = ''
+                return render(request, template, context)
+            else:
                 context['reviews'] = model_review.objects.filter(product=id_product)
                 context['form'] = ReviewForm()
                 value_visit.append(id_product)
                 request.session['visit'] = value_visit
                 return render(request, template, context)
+        else:
+            context['reviews'] = model_review.objects.filter(product=id_product)
+            context['form'] = ReviewForm()
+            value_visit.append(id_product)
+            request.session['visit'] = value_visit
+            return render(request, template, context)
 
+# ситаксическмй сахар - не сазар, большую часть времени приходится заниматся Class-Based Views а не темой лекции
+#  не хватает лекции по Class-Based Views.
 
+# черновики оставил на разобраться потом
 
-
-
-#
 # class ProductView(DetailView):
 #     model = Product
 #     model_review = Review
