@@ -11,9 +11,8 @@ class Car(models.Model):
     def review_count(self):
         return Review.objects.filter(car=self).count()
     review_count.short_description = 'Количество обзоров'
-    # brand.short_description = 'Бреднд'
-    # model.short_description = 'Модель'
 
+    brand.admin_order_field = '-id'
 
 
 class Review(models.Model):
@@ -21,9 +20,7 @@ class Review(models.Model):
     title = models.CharField(max_length=100, verbose_name='Название')
     text = models.TextField()
 
-    # car.short_description = 'Машина'
-    # title.short_description = 'Заголовок'
-    # text.short_description = 'Текст'
+    car.admin_order_field = '-id'
 
     def __str__(self):
         return str(self.car) + ' ' + self.title
