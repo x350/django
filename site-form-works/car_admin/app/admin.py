@@ -12,7 +12,7 @@ class CarAdmin(admin.ModelAdmin):
 class ReviewAdmin(admin.ModelAdmin):
     form = ReviewAdminForm
     list_display = ('car', 'title')
-    ordering = ['pk']
+    ordering = ['-pk']
 
 
 admin.site.register(Car, CarAdmin)
