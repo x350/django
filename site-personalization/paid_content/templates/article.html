@@ -6,7 +6,21 @@
 {% block content %}
     <div class="container">
         <div class="header">
-            <h3>Заголовок статьи</h3>
+            <h5>{{ article.thematic }}</h5>
+            <h3>{{ article.title }}</h3>
         </div>
+        <div>
+            {% if  article.text %}
+                {{ article.text }}
+            {% else %}
+                <a href="{% url "sell_kidney" %}">Продать почку и получить доступ к желтой прессе.</a>
+            {% endif %}
+        </div>
+        <br>
+        {% if article.paid %}
+            <div>Платно.</div>
+        {% else %}
+            <div>Бесплатно.</div>
+        {% endif %}
     </div>
 {% endblock %}

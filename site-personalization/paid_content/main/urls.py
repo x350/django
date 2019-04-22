@@ -16,11 +16,15 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path
+from django.views.generic.base import RedirectView
 
-import views
+from articles import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('articles/', views.show_articles),
-    url(r'^articles/(?P<id>[0-9]+)/', views.show_article),
+    path('articles/', views.show_articles, name='show_articles'),
+    path('paid/', views.sell_kidney, name='sell_kidney'),
+    url(r'^articles/(?P<id>[0-9]+)/', views.show_article, name='show_article'),
+    # url(r'^.*$', RedirectView.as_view(url='articles/', permanent=False), name='index')
+    path('', RedirectView.as_view(url='articles/', permanent=False), name='index')
 ]

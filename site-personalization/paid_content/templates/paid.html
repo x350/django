@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <div class="container">
+        <div class="header">
+            <h1>Поздравляем!</h1>
+            <h3>Именно Вам представилась возможность получить доступ к нашим чудо-статьям.</h3>
+            <h6>Введите Ваше имя.</h6>
+            <form action="" method="GET">
+            {% for field in form %}
+                <p style="margin-top: 15px; margin-bottom: 0px">{{ field.label_tag }}</p> {{ field }}
+            {{ field.errors }}
+            {% endfor %}
+            <input type="submit" style="display: block; margin-top: 20px" value="Продать почку и получить доступ к желтой прессе."/>
+            </form>
+{#            <a href="{% url 'show_articles' %}">Продать почку и получить доступ к желтой прессе.</a>#}
+        </div>
+    </div>
+{% endblock %}

@@ -9,9 +9,15 @@
             <h1>Список статей</h1>
         </div>
         <div class="articles">
-            <h3>Статья 1</h3>
-            <h3>Статья 2</h3>
-            <h3>Статья 3</h3>
+            {% for item in articles %}
+                    <div>
+                        <h3>Статья {{ forloop.counter }}</h3>
+                        <div>
+                            <a class="name" href="{{ item.id }}">{{ item.title }}</a>
+                        </div>
+                    </div>
+            {% endfor %}
+
         </div>
     </div>
 {% endblock %}
