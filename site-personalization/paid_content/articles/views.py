@@ -17,15 +17,12 @@ def show_articles(request):
 
 def show_article(request, id):
     context = {}
-
     article = Article.objects.get(pk=id)
-
     access = request.session.get('access', 0)
-
     if not article.paid or access == 'have':
         context['article'] = article
     else:
-        article.text  =  '' #<a href="{% url "sell_kidney" %}">Продать почку и получить доступ к желтой прессе.</a>
+        article.text  =  ''
         context['article'] = article
 
     return render(

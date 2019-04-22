@@ -8,5 +8,12 @@
         <div class="header">
             <h1>Игра "Угадай число"</h1>
         </div>
+        <form action="" method="GET">
+            {% for field in form %}
+                <p style="margin-top: 15px; margin-bottom: 0px">{{ field.label_tag }}</p> {{ field }}
+            {{ field.errors }}
+            {% endfor %}
+            <input type="submit" style="display: block; margin-top: 20px" value="Проdthbnm"/>
+        </form>
     </div>
 {% endblock %}
