@@ -13,7 +13,10 @@
                 <p style="margin-top: 15px; margin-bottom: 0px">{{ field.label_tag }}</p> {{ field }}
             {{ field.errors }}
             {% endfor %}
-            <input type="submit" style="display: block; margin-top: 20px" value="Проdthbnm"/>
+            <input type="submit" style="display: block; margin-top: 20px" value="Проверить"/>
         </form>
+        <div>
+            <p>{{ message }}</p>
+        </div>
     </div>
 {% endblock %}

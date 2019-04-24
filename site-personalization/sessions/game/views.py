@@ -1,49 +1,66 @@
 from django.shortcuts import render
 from .forms import InputNumber
 from .models import Player, Game,PlayerGameInfo
-import string, random
+import string
+import random
 N = 20
-
 
 
 def show_home(request):
     context = {}
     context['form'] = InputNumber()
+    attempt_number = request.GET.get('number')
     key = request.session.get('key', 0)
-    game_wait = Game.objects.filter(wait=True)
+
+    if not attempt_number:
+        player = None
+        if not key:
+            key = random_key(N)
+            request.session['key'] = key
+            player = Player.objects.create(session_id=key)
+        else:
+            player = Player.objects.filter(session_id=key)
+
+        game_wait = Game.objects.filter(wait=True)
+        if not game_wait:
+            game_id = random_key(N)
+            number = random.randint(1, 10)
+            game = Game.objects.create(game_id=game_id, number=number, wait=True)
+            PlayerGameInfo.objects.create(game=game, player=player)
+            context['number'] = number
+            return render(request, 'start.html', context)
+        else:
+            player.is_attempt = True
+            player.save()
+            game_wait[0].wait = False
+            game_wait[0].save()
+            PlayerGameInfo.objects.create(game=game_wait[0], player=player)
+            return render(request, 'home.html', context)
 
     if not key:
-        key = random_key(N)
-        request.session['key'] = key
+        return render(request, 'error.html')
 
-    if not game_wait:
-        player = Player.objects.create(session_id=key, is_attempt=False)
-        game_id = random_key(N)
-        number = random.randint(1, 10)
-        game = Game.objects.create(game_id=game_id, number=number, wait=True)
-        game.players.set(player)
-        context['number'] = number
-        return render(request, 'start.html', context)
+    player = Player.objects.filter(session_id=key)
+    current_game = Game.objects.all().order_by('-id')[0]
+    current_number = current_game.number
+
+    if player.is_attempt:
+        current_game.attempt_count += 1
+        current_game.save()
+        message = ''
+        if current_number == attempt_number:
+            message = f'Вы угадали число, всего попыток {current_game.attempt_count}'
+        elif current_number < attempt_number:
+            message = f'Загаданное число меньше {attempt_number}'
+        else:
+            message = f'Загаданное число больше {attempt_number}'
+        context['message'] = message
+        return render(request, 'base.html', context)
     else:
-        player_2 = Player.objects.create(session_id=key, is_attempt=True)
-        print(game_wait)
-        game_wait.wait = False
-        game_wait.players.add(player_2)
-        game_wait.save()
-        return render(request, 'home.html', context)
-
-
-
-
-    context = {}
-    context['form'] = InputNumber()
-
-
-    # current_game = Game.objects.all().order_by('-id')[0]
-    # context['number'] = current_game.number
-    #
-
-    return render(request, 'start.html', context)
+        message = f'Ваше число угадывают, число попыток {current_game.attempt_count}'
+        context['message'] = message
+        context['form'] = ''
+        return render(request, 'base.html', context)
 
 
 def random_key(N):

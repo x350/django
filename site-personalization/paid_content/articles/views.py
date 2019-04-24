@@ -1,7 +1,6 @@
 from django.shortcuts import render, render_to_response
 from .models import Article, Profile
 from .forms import InputName
-from django.http.response import HttpResponseRedirect
 
 
 def show_articles(request):
@@ -22,7 +21,7 @@ def show_article(request, id):
     if not article.paid or access == 'have':
         context['article'] = article
     else:
-        article.text  =  ''
+        article.text = ''
         context['article'] = article
 
     return render(
