@@ -9,7 +9,7 @@ N = 20
 def show_home(request):
     context = {}
     context['form'] = InputNumber()
-    attempt_number = request.GET.get('number')
+    attempt_number = int(request.GET.get('number', 0))
     key = request.session.get('key', 0)
 
     if not attempt_number:
@@ -19,7 +19,9 @@ def show_home(request):
             request.session['key'] = key
             player = Player.objects.create(session_id=key)
         else:
-            player = Player.objects.filter(session_id=key)
+            player = Player.objects.filter(session_id=key)[0]
+            if not player:
+                player = Player.objects.create(session_id=key)
 
         game_wait = Game.objects.filter(wait=True)
         if not game_wait:
@@ -42,9 +44,9 @@ def show_home(request):
 
     player = Player.objects.filter(session_id=key)
     current_game = Game.objects.all().order_by('-id')[0]
-    current_number = current_game.number
+    current_number = int(current_game.number)
 
-    if player.is_attempt:
+    if player[0].is_attempt:
         current_game.attempt_count += 1
         current_game.save()
         message = ''
@@ -55,12 +57,12 @@ def show_home(request):
         else:
             message = f'Загаданное число больше {attempt_number}'
         context['message'] = message
-        return render(request, 'base.html', context)
+        return render(request, 'home.html', context)
     else:
         message = f'Ваше число угадывают, число попыток {current_game.attempt_count}'
         context['message'] = message
-        context['form'] = ''
-        return render(request, 'base.html', context)
+        # context['form'] = ''
+        return render(request, 'home.html', context)
 
 
 def random_key(N):
