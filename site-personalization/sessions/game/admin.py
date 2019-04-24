@@ -8,7 +8,7 @@ class PlayerGameInfoInline(admin.TabularInline):
 @admin.register(Player)
 class PlayerAdmin(admin.ModelAdmin):
     list_display = (
-        'session_id',
+        'session_id', 'is_attempt'
     )
     inlines = (PlayerGameInfoInline,)
 
@@ -16,7 +16,7 @@ class PlayerAdmin(admin.ModelAdmin):
 @admin.register(Game)
 class GameAdmin(admin.ModelAdmin):
     list_display = (
-        'game_id', 'number', 'wait'
+        'game_id', 'number', 'wait', 'attempt_count'
     )
     inlines = (PlayerGameInfoInline,)
 

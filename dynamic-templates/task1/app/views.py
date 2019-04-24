@@ -12,11 +12,10 @@ class InflationView(TemplateView):
         context = {}
         file_path = os.path.join(settings.BASE_DIR, 'inflation_russia.csv')
         with open(file_path, newline='', encoding='utf-8') as csvfile:
-            reader = csv.DictReader(csvfile)
-            context['head'] = next(csvfile).split(';')
+            reader = csv.reader(csvfile, delimiter=';')
+            context['head'] = next(reader)
             context['data'] = []
             for row in reader:
-                item = row.popitem()[1].split(';')
-                context['data'].append(item)
+                context['data'].append(row)
         return render(request, self.template_name, context)
 
