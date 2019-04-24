@@ -13,7 +13,7 @@ def show_home(request):
     key = request.session.get('key', 0)
 
     if not attempt_number:
-        player = None
+        # player = None
         if not key:
             key = random_key(N)
             request.session['key'] = key
@@ -51,7 +51,10 @@ def show_home(request):
         current_game.save()
         message = ''
         if current_number == attempt_number:
+            context['form'] = ''
             message = f'Вы угадали число, всего попыток {current_game.attempt_count}'
+            player[0].is_attempt = False
+            player[0].save()
         elif current_number < attempt_number:
             message = f'Загаданное число меньше {attempt_number}'
         else:
@@ -61,7 +64,7 @@ def show_home(request):
     else:
         message = f'Ваше число угадывают, число попыток {current_game.attempt_count}'
         context['message'] = message
-        # context['form'] = ''
+        context['form'] = ''
         return render(request, 'home.html', context)
 
 
