@@ -25,7 +25,7 @@ def show_home(request):
         game_wait = Game.objects.filter(wait=True)
         if not game_wait:
             current_game = Game.objects.filter(continue_attempt=True)
-            if current_game and player.is_attempt != True:
+            if not current_game and player.is_attempt:
                 # current_game = Game.objects.all().order_by('-id')[0]
                 message = f'Ваше число угадывают, число попыток {current_game[0].attempt_count}'
                 context['message'] = message
@@ -49,7 +49,6 @@ def show_home(request):
             PlayerGameInfo.objects.create(game=game_wait[0], player=player)
             return render(request, 'home.html', context)
 
-
     if not key:
         return render(request, 'error.html')
 
@@ -60,7 +59,7 @@ def show_home(request):
     if player[0].is_attempt:
         current_game.attempt_count += 1
         current_game.save()
-        message = ''
+        # message = ''
         if current_number == attempt_number:
             context['form'] = ''
             message = f'Вы угадали число, всего попыток {current_game.attempt_count}'
