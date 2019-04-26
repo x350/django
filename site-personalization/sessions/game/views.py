@@ -40,7 +40,6 @@ def show_home(request):
             game = Game.objects.create(game_id=game_id, number=number, wait=True, continue_attempt=True)
             PlayerGameInfo.objects.create(game=game, player=player)
             context['number'] = number
-            request.session['main'] = 'main'
             return render(request, 'start.html', context)
         else:
             player.is_attempt = True
