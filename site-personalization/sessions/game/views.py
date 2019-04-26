@@ -13,7 +13,6 @@ def show_home(request):
     key = request.session.get('key', 0)
 
     if not attempt_number:
-        # player = None
         if not key:
             key = random_key(N)
             request.session['key'] = key
@@ -25,11 +24,23 @@ def show_home(request):
 
         game_wait = Game.objects.filter(wait=True)
         if not game_wait:
+            current_game = Game.objects.filter(continue_attempt=True)
+            if current_game and player.is_attempt != True:
+                # current_game = Game.objects.all().order_by('-id')[0]
+                message = f'Ваше число угадывают, число попыток {current_game[0].attempt_count}'
+                context['message'] = message
+                context['form'] = ''
+                return render(request, 'home.html', context)
+
+            player.is_attempt = False
+            player.save()
+
             game_id = random_key(N)
             number = random.randint(1, 10)
-            game = Game.objects.create(game_id=game_id, number=number, wait=True)
+            game = Game.objects.create(game_id=game_id, number=number, wait=True, continue_attempt=True)
             PlayerGameInfo.objects.create(game=game, player=player)
             context['number'] = number
+            request.session['main'] = 'main'
             return render(request, 'start.html', context)
         else:
             player.is_attempt = True
@@ -38,6 +49,7 @@ def show_home(request):
             game_wait[0].save()
             PlayerGameInfo.objects.create(game=game_wait[0], player=player)
             return render(request, 'home.html', context)
+
 
     if not key:
         return render(request, 'error.html')
@@ -55,6 +67,8 @@ def show_home(request):
             message = f'Вы угадали число, всего попыток {current_game.attempt_count}'
             player[0].is_attempt = False
             player[0].save()
+            current_game.continue_attempt = False
+            current_game.save()
         elif current_number < attempt_number:
             message = f'Загаданное число меньше {attempt_number}'
         else:

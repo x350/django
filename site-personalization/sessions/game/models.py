@@ -12,6 +12,7 @@ class Game(models.Model):
     players = models.ManyToManyField(Player, through='PlayerGameInfo')
     wait = models.BooleanField(verbose_name='Ждем второго', default=False)
     attempt_count = models.IntegerField(verbose_name='Число попыток', default=0)
+    continue_attempt = models.BooleanField(verbose_name='Игра продолжается',  default=False)
 
 
 
