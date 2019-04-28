@@ -9,9 +9,15 @@
         {% csrf_token %}
         {% if request.user.is_authenticated %}
             <li> Привет {{ user.get_username }}</li>
-            <li><a href="{% url 'signup' %}">Зарегистрируйся</a></li>
-            <li><a href="{% url 'login' %}">Авторизируйся</a></li>
-            <li><a href="{% url 'logout' %}">Выйти</a></li>
+{#            <li><a href="{% url 'signup' %}">Зарегистрируйся</a></li>#}
+            <li><input type="button" value="Зарегистрируйся" onclick="location.href={% url 'signup' %}"></input></li>
+
+{#            <li><a href="{% url 'login' %}">Авторизируйся</a></li>#}
+            <li><input type="button" value="Aвторизируйся" onclick="location.href={% url 'login' %}"></input></li>
+
+{#            <li><a href="{% url 'logout' %}">Выйти</a></li>#}
+            <li><input type="button" value="Выйти" onclick="location.href={% url 'logout' %}"></input></li>
+
         {%  else %}
             Привет, <b>гость</b>.<br>
             Пожалуйста, <a href="/signup">зарегистрируйся</a> или <a href="/login">авторизуйся</a>!
