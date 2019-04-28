@@ -20,7 +20,9 @@ from django.urls import path
 import auth.views
 
 urlpatterns = [
-    path('', auth.views.home),
-    path('admin/', admin.site.urls),
-    path('signup/', auth.views.signup),
+    path('', auth.views.home, name='home'),
+    path('admin/', admin.site.urls, name='admin'),
+    path('signup/', auth.views.signup, name='signup'),
+    path('login/', auth.views.login_user, name='login'),
+    path('logout/', auth.views.logout_user, name='logout')
 ]
