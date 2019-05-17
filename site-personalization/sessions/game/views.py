@@ -22,7 +22,7 @@ def show_home(request):
             if not player:
                 player = Player.objects.create(session_id=key)
 
-        game_wait = Game.objects.filter(wait=True)
+        game_wait = Game.objects.filter(wait=True).first()
         if not game_wait:
             current_game = Game.objects.filter(continue_attempt=True)
             if current_game and not player.is_attempt:
@@ -44,30 +44,35 @@ def show_home(request):
         else:
             player.is_attempt = True
             player.save()
-            game_wait[0].wait = False
-            game_wait[0].save()
-            PlayerGameInfo.objects.create(game=game_wait[0], player=player)
+            game_wait.wait = False
+            game_wait.save()
+            PlayerGameInfo.objects.create(game=game_wait, player=player)
             return render(request, 'home.html', context)
 
 
     if not key:
         return render(request, 'error.html')
 
-    player = Player.objects.filter(session_id=key)
-    current_game = Game.objects.all().order_by('-id')[0]
-    current_number = int(current_game.number)
+    player = Player.objects.filter(session_id=key).first()
+    # current_game = Game.objects.all().order_by('-id')[0]
+    # print('current_game = ',   current_game )
 
-    if player[0].is_attempt:
-        current_game.attempt_count += 1
-        current_game.save()
+    current_game = PlayerGameInfo.objects.filter(player=player).first()
+    print('curre = ', current_game.game.number)
+
+    current_number = int(current_game.game.number)
+
+    if player.is_attempt:
+        current_game.game.attempt_count += 1
+        current_game.game.save()
         message = ''
         if current_number == attempt_number:
             context['form'] = ''
-            message = f'Вы угадали число, всего попыток {current_game.attempt_count}'
-            player[0].is_attempt = False
-            player[0].save()
-            current_game.continue_attempt = False
-            current_game.save()
+            message = f'Вы угадали число, всего попыток {current_game.game.attempt_count}'
+            player.is_attempt = False
+            player.save()
+            current_game.game.continue_attempt = False
+            current_game.game.save()
         elif current_number < attempt_number:
             message = f'Загаданное число меньше {attempt_number}'
         else:
@@ -75,7 +80,7 @@ def show_home(request):
         context['message'] = message
         return render(request, 'home.html', context)
     else:
-        message = f'Ваше число угадывают, число попыток {current_game.attempt_count}'
+        message = f'Ваше число угадывают, число попыток {current_game.game.attempt_count}'
         context['message'] = message
         context['form'] = ''
         return render(request, 'home.html', context)
