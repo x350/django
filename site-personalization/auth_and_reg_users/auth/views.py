@@ -36,14 +36,15 @@ def login_user(request):
         return render(request, 'login.html', {'form': form})
     if request.method == 'POST':
         form = LoginForm(request.POST)
-        if form.is_valid():
-            print('form is valid')
         username = form['username'].value()
         password = form['password'].value()
         user = authenticate(username=username, password=password)
         if user is not None:
             login(request, user)
-        return render(request, 'home.html')
+            return render(request, 'home.html')
+        else:
+            return HttpResponseRedirect('/login')
+
 
 
 def logout_user(request):
