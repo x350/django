@@ -14,20 +14,24 @@ def show_home(request):
 
     if not attempt_number:
         if not key:
-            key = random_key(N)
-            request.session['key'] = key
-            player = Player.objects.create(session_id=key)
+            # key = random_key(N)
+            # request.session['key'] = key
+            # player = Player.objects.create(session_id=key)
+
+            player = Player.objects.create()
+            request.session['key'] = player.pk
+
         else:
-            player = Player.objects.filter(session_id=key)[0]
+            player = Player.objects.filter(session_id=key).first()
             if not player:
                 player = Player.objects.create(session_id=key)
 
         game_wait = Game.objects.filter(wait=True).first()
         if not game_wait:
-            current_game = Game.objects.filter(continue_attempt=True)
+            current_game = Game.objects.filter(continue_attempt=True).first()
             if current_game and not player.is_attempt:
                 # current_game = Game.objects.all().order_by('-id')[0]
-                message = f'Ваше число угадывают, число попыток {current_game[0].attempt_count}'
+                message = f'Ваше число угадывают, число попыток {current_game.attempt_count}'
                 context['message'] = message
                 context['form'] = ''
                 return render(request, 'home.html', context)
@@ -35,9 +39,9 @@ def show_home(request):
             player.is_attempt = False
             player.save()
 
-            game_id = random_key(N)
+            # game_id = random_key(N)
             number = random.randint(1, 10)
-            game = Game.objects.create(game_id=game_id, number=number, wait=True, continue_attempt=True)
+            game = Game.objects.create(number=number, wait=True, continue_attempt=True)
             PlayerGameInfo.objects.create(game=game, player=player)
             context['number'] = number
             return render(request, 'start.html', context)
@@ -55,10 +59,7 @@ def show_home(request):
 
     player = Player.objects.filter(session_id=key).first()
     # current_game = Game.objects.all().order_by('-id')[0]
-    # print('current_game = ',   current_game )
-
-    current_game = PlayerGameInfo.objects.filter(player=player).first()
-    print('curre = ', current_game.game.number)
+    current_game = PlayerGameInfo.objects.filter(player=player).last()
 
     current_number = int(current_game.game.number)
 
@@ -86,5 +87,5 @@ def show_home(request):
         return render(request, 'home.html', context)
 
 
-def random_key(N):
-    return ''.join(random.choices(string.ascii_letters + string.digits, k=N))
+# def random_key(N):
+#     return ''.join(random.choices(string.ascii_letters + string.digits, k=N))
