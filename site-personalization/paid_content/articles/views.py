@@ -1,7 +1,8 @@
 from django.shortcuts import render, render_to_response
 from .models import Article, Profile
 from .forms import InputName
-
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login
 
 def show_articles(request):
     context = {}
@@ -15,22 +16,19 @@ def show_articles(request):
 
 
 def show_article(request, id):
+
     context = {}
     article = Article.objects.get(pk=id)
     if not article.paid:
         context['article'] = article
         return render(request, 'article.html', context)
 
-    access = request.session.get('access', 0)
-    if access:
-        user = Profile.objects.get(pk=access)
-        if user.vip:
-            context['article'] = article
-            return render(request, 'article.html', context)
-        else:
-            return render(request, 'error.html')
+    if request.user.is_authenticated:
+        context['article'] = article
+        return render(request, 'article.html', context)
     else:
-        return render(request, 'error.html')
+            return render(request, 'error.html')
+
 
 
 def sell_kidney(request):
@@ -39,7 +37,11 @@ def sell_kidney(request):
         context['form'] = InputName()
         return render(request, 'paid.html', context)
     elif request.method == 'POST':
-        name = request.POST.get('name')
-        new_profile = Profile.objects.create(name=name, vip=True)
-        request.session['access'] = new_profile.pk
-        return render(request, 'congratulations.html')
+        form = InputName(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            Profile.objects.create(name= User.objects.get(username=user), vip=True)
+            return render(request, 'congratulations.html')
+        else:
+            return render(request, 'error.html', {'form': form.errors})

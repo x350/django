@@ -3,11 +3,11 @@ from django.db import models
 
 
 class Profile(models.Model):
-    name = models.CharField(max_length=256, verbose_name='Имя')
+    # name = models.CharField(max_length=256, verbose_name='Имя')
     vip = models.BooleanField(verbose_name='Платный доступ')
-    # articles = models.ForeignKey(Article, on_delete=models.CASCADE)
-    def __str__(self):
-        return self.name
+    name = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Имя')
+    # def __str__(self):
+    #     return self.name
 
 
 class Article(models.Model):

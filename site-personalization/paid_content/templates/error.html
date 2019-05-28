@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <div class="container">
+        <p>Вы не можете прочитать данную статью: {{ form }}</p>
+        <a href="{% url 'show_articles' %}">Нажмите для перехода к выбору статей.</a>
+        <br>
+        <a href="{% url 'sell_kidney' %}">Нажмите для оформления подписки.</a>
+    </div>
+{% endblock %}
